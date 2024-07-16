@@ -3,12 +3,48 @@
         <div v-if="game">
             <button @click="turn">Take Turn</button>
         </div>
+        <h2>Pile</h2>
+        <div>
+            <ul class="card-group">
+                <li v-for="card in discardPileCards" :key="card">
+                    <PlayingCard :card="card.card" :suite="card.suite" />
+                </li>
+            </ul>
+        </div>
+        <h2>Hands</h2>
+        <div v-if="game?.players">
+            <div v-for="player in game.players" :key="player">
+                <h3>{{ player.name }}</h3>
+                <ul class="card-group">
+                    <li v-for="card in player.hand" :key="card">
+                        <PlayingCard :card="card.card" :suite="card.suite" />
+                    </li>
+                </ul>
+            </div>
+            
+        </div>
+        <h2>Sets</h2>
+        <div v-if="game?.sets">
+            <div v-for="(set, i) in game.sets" :key="set">
+                <h3>Set {{ i }}</h3>
+                <ul class="card-group">
+                    <li v-for="card in set" :key="card">
+                        <PlayingCard :card="card.card" :suite="card.suite" />
+                    </li>
+                </ul>
+            </div>
+            
+        </div>
     </div>
 </template>
 
 <script>
 import RummyGame from '@/classes/RummyGame'
+import PlayingCard from './PlayingCard.vue';
 export default {
+    components: {
+        PlayingCard,
+    },
     data () {
         return {
             game: null
@@ -20,6 +56,11 @@ export default {
         this.game.initialize();
         console.log(this.game.deck);
         console.log(this.game.players);
+    },
+    computed: {
+        discardPileCards () {
+            return this.game ? this.game.discardPile : [];
+        },
     },
     methods: {
         turn () {
@@ -38,5 +79,14 @@ export default {
 </script>
 
 <style>
-
+.card-group{
+    display: flex;
+    margin: 8px;
+    padding: 0;
+}
+.card-group li{
+    display: block;
+    padding: 0;
+    margin: 2px;
+}
 </style>

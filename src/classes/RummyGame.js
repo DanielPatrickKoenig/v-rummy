@@ -114,9 +114,26 @@ export default class RummyGame extends CardGame{
             }
             
         }
-        console.log(setList);
-        console.log(uniqueOptionsWithFlag);
-        console.log(indexesInDiscardPile);
-        console.log(this.discardPile.length);
+        // console.log(setList);
+        // console.log(uniqueOptionsWithFlag);
+        // console.log(indexesInDiscardPile);
+        // console.log(this.discardPile.length);
+
+        const newSets = setList.map(item => item.cards.map(_item => ({ ..._item, player: this.getCurrentPlayer().player })))
+        this.sets = [...this.sets, ...newSets];
+
+        this.sets.forEach(item => {
+            item.forEach(_item => {
+                const cardIndex = this.getCardIndexInList(this.getCurrentPlayer().hand, _item);
+                const { list } = this.pullItemFromCardList(this.getCurrentPlayer().hand, cardIndex);
+                this.setPlayerHand(this.getCurrentPlayer().name, list);
+            });
+        });
+        // console.log(this.sets);
+        // const newHand = this.getCurrentPlayer().hand.filter(item => this.getCardIndexInList(uniqueOptionsWithFlag, item) < 0);
+        // if(newHand.join) {
+        //     this.setPlayerHand(this.getCurrentPlayer().name, newHand);
+        // }
+        // console.log(this.getCurrentPlayer().hand);
     }
 }

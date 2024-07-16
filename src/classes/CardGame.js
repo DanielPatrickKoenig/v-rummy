@@ -73,4 +73,13 @@ export default class CardGame {
     getMasterCardIndex(card){
         return this.getCardIndexInList(this.deck_template, { card: card.card, suite: card.suite });
     }
+
+    setPlayerHand(playerName, list) {
+        console.log('list');
+        console.log(list);
+        const indexedPlayers = this.players.map((item, index) => ({ ...item, index }));
+        const playerIndex = indexedPlayers.find(item => item.name == playerName).index;
+        this.players[playerIndex].hand = list;
+
+    }
 }
